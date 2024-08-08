@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import Contributions3D from "@/components/Contributions/Canvas";
 import Header from "@/components/Header";
 import useWindowSize from "@/hooks/usewindow";
+import { logEvent } from "../../lib/analytics";
 
 export default function Contributions() {
   const [username, setUsername] = useState("");
@@ -10,8 +11,7 @@ export default function Contributions() {
   const [error, setError] = useState<string | null>(null);
   const contributionsRef = useRef<any>(null);
 
-
-  const { width, height } = useWindowSize(); 
+  const { width, height } = useWindowSize();
 
   const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
 
@@ -27,7 +27,6 @@ export default function Contributions() {
   const adjustedWidth =
     width < 500 ? width - 24 : width < 1024 ? width * 0.9 : 1200;
   const adjustedHeight = 600; // Set height according to your design
-
 
   const handleExport = () => {
     if (contributionsRef.current) {
@@ -58,6 +57,7 @@ export default function Contributions() {
       setError("An error occurred while fetching contributions.");
     } finally {
       setLoading(false);
+      logEvent("User", "Click Button");
     }
   };
 
