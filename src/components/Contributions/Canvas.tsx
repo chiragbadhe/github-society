@@ -205,7 +205,7 @@ const Contributions3D = forwardRef<any, ContributionsProps>(
       };
 
       fetchAndRender();
-    }, [username, token, modelDepth, width, height, gui, isAnimating]);
+    }, [username, token, modelDepth, width, height, isAnimating]);
 
     return (
       <div
@@ -216,5 +216,7 @@ const Contributions3D = forwardRef<any, ContributionsProps>(
     );
   }
 );
+
+Contributions3D.displayName = "Contributions3D";
 
 export default Contributions3D;

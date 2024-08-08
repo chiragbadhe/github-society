@@ -1,4 +1,3 @@
-// pages/_document.tsx
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
@@ -6,7 +5,6 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <title>GitHub Society</title>
           <meta
             name="description"
             content="Visualize your GitHub contributions in 3D and export the 3D model with GitHub Society."

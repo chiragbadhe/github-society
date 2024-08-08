@@ -1,10 +1,16 @@
 import Contributions from "@/components/Contributions";
+import { Head } from "next/document";
 
 const HomePage = () => {
   return (
-    <main>
-      <Contributions />
-    </main>
+    <>
+      <Head>
+        <title>GitHub Society</title>
+      </Head>
+      <main>
+        <Contributions />
+      </main>
+    </>
   );
 };
 
