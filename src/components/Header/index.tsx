@@ -3,7 +3,11 @@ import React from "react";
 const Header = () => {
   return (
     <div className="my-[12px] border-b  flex items-center justify-between  w-full border-white/10">
-      <div className="text-[24px] opacity-80 py-[12px]">#github-society</div>
+      <div className="text-[24px] opacity-80 py-[12px]">
+        <a href="https://github.com/chiragbadhe/github-society">
+          <span className="text-cyan-600">#</span>github-society
+        </a>
+      </div>
       <div className="flex space-x-2">
         <a
           href="https://github.com/chiragbadhe/github-society"
