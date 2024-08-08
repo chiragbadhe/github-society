@@ -205,7 +205,7 @@ const Contributions3D = forwardRef<any, ContributionsProps>(
       };
 
       fetchAndRender();
-    }, [username, token, modelDepth, width, height, gui]);
+    }, [username, token, modelDepth, width, height, gui, isAnimating]);
 
     return (
       <div
