@@ -8,6 +8,8 @@ export default function Contributions() {
   const [showContributions, setShowContributions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const contributionsRef = useRef<any>(null);
+
 
   const { width, height } = useWindowSize(); 
 
@@ -26,7 +28,6 @@ export default function Contributions() {
     width < 500 ? width - 24 : width < 1024 ? width * 0.9 : 1200;
   const adjustedHeight = 600; // Set height according to your design
 
-  const contributionsRef = useRef<any>(null);
 
   const handleExport = () => {
     if (contributionsRef.current) {

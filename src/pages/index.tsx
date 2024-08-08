@@ -1,5 +1,5 @@
 import Contributions from "@/components/Contributions";
-import { Head } from "next/document";
+import Head from "next/head";
 
 const HomePage = () => {
   return (
