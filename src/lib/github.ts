@@ -1,21 +1,19 @@
-import { GitHubContributionsData } from "../types";
-
-const GITHUB_GRAPHQL_API = "https://api.github.com/graphql";
+// github.ts
+import axios from "axios";
 
 export const fetchGitHubContributions = async (
   username: string,
   token: string
-): Promise<GitHubContributionsData> => {
+) => {
   const query = `
-    query($username: String!) {
+    query ($username: String!) {
       user(login: $username) {
         contributionsCollection {
           contributionCalendar {
-            totalContributions
             weeks {
               contributionDays {
-                date
                 contributionCount
+                date
               }
             }
           }
@@ -24,22 +22,29 @@ export const fetchGitHubContributions = async (
     }
   `;
 
-  const response = await fetch(GITHUB_GRAPHQL_API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      query,
-      variables: { username },
-    }),
-  });
+  try {
+    const response = await axios.post(
+      "https://api.github.com/graphql",
+      { query, variables: { username } },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-  if (!response.ok) {
+    if (response.status !== 200) {
+      throw new Error(
+        `GitHub API responded with status code ${response.status}`
+      );
+    }
+
+    return response.data.data;
+  } catch (error: any) {
+    console.error(
+      "Error in fetchGitHubContributions:",
+      error.response?.data || error.message
+    );
     throw new Error("Failed to fetch contributions");
   }
-
-  const { data } = await response.json();
-  return data;
 };

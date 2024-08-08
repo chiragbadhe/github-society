@@ -1,24 +1,43 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from "react";
 import * as THREE from "three";
 import { fetchGitHubContributions } from "@/lib/github";
 import { ContributionsProps, Week } from "@/types";
 import { getContributionColor } from "@/utils";
-import { OrbitControls } from "three/examples/jsm/Addons.js";
+import { OrbitControls, STLExporter } from "three/examples/jsm/Addons.js";
 
-const Contributions3D: React.FC<ContributionsProps> = ({
+const Contributions3D = forwardRef<any, ContributionsProps>(({
   username,
   token,
   height,
   width,
   modelDepth = 1,
-}) => {
+}, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const sceneInitialized = useRef(false);
   const [isAnimating, setIsAnimating] = useState(true);
+  const [gui, setGui] = useState<any | null>(null);
+  const buildingsGroupRef = useRef<THREE.Group | null>(null);
+
+  useImperativeHandle(ref, () => ({
+    exportModel: () => {
+      if (buildingsGroupRef.current) {
+        const exporter = new STLExporter();
+        const result = exporter.parse(buildingsGroupRef.current);
+        const blob = new Blob([result], { type: "model/stl" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "model.stl";
+        link.click();
+      }
+    }
+  }));
 
   useEffect(() => {
+    if (typeof window === "undefined") return; // Prevent SSR issues
+
     const fetchAndRender = async () => {
       try {
         const data = await fetchGitHubContributions(username, token);
@@ -33,8 +52,11 @@ const Contributions3D: React.FC<ContributionsProps> = ({
       }
     };
 
-    const render3DView = (weeks: Week[]) => {
+    const render3DView = async (weeks: Week[]) => {
       if (!containerRef.current) return;
+
+      // Dynamically import dat.gui
+      const { GUI } = await import("dat.gui");
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(
@@ -119,6 +141,7 @@ const Contributions3D: React.FC<ContributionsProps> = ({
       // Apply depth scaling
       buildingsGroup.scale.z = modelDepth;
       scene.add(buildingsGroup);
+      buildingsGroupRef.current = buildingsGroup; // Store the buildings group ref
 
       // Set camera position
       camera.position.set(0, 20, 60);
@@ -131,9 +154,20 @@ const Contributions3D: React.FC<ContributionsProps> = ({
       controls.enableZoom = true;
       controls.minPolarAngle = Math.PI / 6;
       controls.maxPolarAngle = Math.PI / 2;
-      controls.maxDistance = 50;
-      controls.minDistance = 20;
+      controls.maxDistance = 100;
+      controls.minDistance = 10;
       controlsRef.current = controls;
+
+      // Initialize dat.GUI
+      const guiInstance = new GUI();
+      guiInstance.domElement.classList.add('datgui-container'); // Add custom class
+      setGui(guiInstance);
+      const cameraFolder = guiInstance.addFolder("Camera");
+      cameraFolder.add(camera.position, "x", -100, 100).name("Camera X");
+      cameraFolder.add(camera.position, "y", 0, 100).name("Camera Y");
+      cameraFolder.add(camera.position, "z", -100, 100).name("Camera Z");
+      cameraFolder.open();
+      containerRef.current.appendChild(guiInstance.domElement); // Append to the canvas container
 
       // Render loop
       const animate = () => {
@@ -156,19 +190,20 @@ const Contributions3D: React.FC<ContributionsProps> = ({
         }
         scene.remove(...scene.children);
         containerRef.current?.removeChild(renderer.domElement);
+        if (gui) gui.destroy(); // Cleanup dat.GUI
       };
     };
 
     fetchAndRender();
-  }, [username, token, modelDepth, width, height]);
+  }, [username, token, modelDepth, width, height, gui]);
 
   return (
     <div
       ref={containerRef}
-      className="canvas-container  bg-[rgb(13,13,13)] border rounded-2xl border-white/10"
+      className="relative canvas-container bg-[rgb(13,13,13)] border rounded-2xl border-white/10"
       style={{ width: width, height: height }}
     />
   );
-};
+});
 
 export default Contributions3D;

@@ -31,3 +31,10 @@ body {
     text-wrap: balance;
   }
 }
+
+.datgui-container {
+  position: absolute;
+  top: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  z-index: 1000; /* Ensure it is on top of other elements */
+}

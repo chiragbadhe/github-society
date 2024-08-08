@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Contributions3D from "@/components/Contributions";
 import Header from "@/components/Header";
 
@@ -18,6 +18,14 @@ export default function Home() {
       </p>
     );
   }
+
+  const contributionsRef = useRef<any>(null);
+
+  const handleExport = () => {
+    if (contributionsRef.current) {
+      contributionsRef.current.exportModel();
+    }
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -58,22 +66,35 @@ export default function Home() {
         />
         <button
           onClick={handleSubmit}
-          className="ml-4 px-[10px] py-[10px] font-thin text-md bg-cyan-900 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400"
+          className="ml-4 px-[10px] py-[10px] font-thin text-md bg-cyan-900 text-white rounded-md hover:bg-cyan-600 disabled:bg-gray-400"
           disabled={loading}
         >
           {loading ? "Loading..." : "View Contributions"}
         </button>
+
+        {showContributions && !loading && (
+          <button
+            onClick={handleExport}
+            className="ml-4 px-[10px] py-[10px] font-thin text-md bg-cyan-900 text-white rounded-md hover:bg-cyan-600 disabled:bg-gray-400"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Export Model"}
+          </button>
+        )}
       </div>
 
       {error && <p className="text-red-500">{error}</p>}
 
       {showContributions && !loading ? (
-        <Contributions3D
-          username={username}
-          token={token}
-          height={600}
-          width={1200}
-        />
+        <div className="relative">
+          <Contributions3D
+            ref={contributionsRef}
+            username={username}
+            token={token}
+            height={600}
+            width={1200}
+          />
+        </div>
       ) : (
         <div className="canvas-container  bg-[rgb(13,13,13)] border rounded-2xl border-white/10 h-[600px] w-[1200px] text-center items-center justify-center flex">
           <span className="text-[32px] opacity-40 font-thin">
