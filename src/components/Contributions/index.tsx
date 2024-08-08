@@ -22,7 +22,7 @@ export default function Contributions() {
     );
   }
 
-  const adjustedWidth = width < 768 ? width - 24 : 1200;
+  const adjustedWidth = width < 500 ? width - 24 : width < 1024 ? width * 0.9 : 1200;
   const adjustedHeight = 600; // Set height according to your design
 
   const contributionsRef = useRef<any>(null);
@@ -60,15 +60,15 @@ export default function Contributions() {
   };
 
   return (
-    <div className="container mx-auto flex flex-col items-center justify-center mb-[60px]  overflow-hidden px-[12px]">
+    <div className="container mx-auto flex flex-col items-center justify-center mb-[60px] px-[12px]">
       <Header />
-      <div className="mb-4  md:flex-row md:flex flex-col items-center space-y-[12px] md:space-y-0 mt-[45px]">
+      <div className="mb-4   md:flex-row md:flex flex-col items-center space-y-[12px] md:space-y-0 mt-[45px]">
         <input
           type="text"
           value={username}
           onChange={handleInputChange}
           placeholder="Enter GitHub username"
-          className="p-2 text-lg border font-thin px-[18px] w-full  md:min-w-[600px] border-white/10 rounded-md bg-transparent outline-none"
+          className="p-2 text-lg border font-thin px-[18px] w-full   lg:min-w-[600px] border-white/10 rounded-md bg-transparent outline-none"
         />
         <button
           onClick={handleSubmit}
