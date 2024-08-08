@@ -34,7 +34,17 @@ body {
 
 .datgui-container {
   position: absolute;
-  top: 10px; /* Adjust as needed */
-  right: 10px; /* Adjust as needed */
+  top: 10px; /* Position from the top on larger screens */
+  right: 10px; /* Position from the right on larger screens */
   z-index: 1000; /* Ensure it is on top of other elements */
+}
+
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+  .datgui-container {
+    position: absolute; /* Use fixed positioning to center on mobile screens */
+    top: 10%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust position to exact center */
+    margin: 0; /* Remove any default margin */
+  }
 }

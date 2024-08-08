@@ -1,12 +1,15 @@
 import { useRef, useState } from "react";
 import Contributions3D from "@/components/Contributions/Canvas";
 import Header from "@/components/Header";
+import useWindowSize from "@/hooks/usewindowsize";
 
 export default function Contributions() {
   const [username, setUsername] = useState("");
   const [showContributions, setShowContributions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const { width, height } = useWindowSize(); // Get window size from the custom hook
 
   const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
 
@@ -18,6 +21,9 @@ export default function Contributions() {
       </p>
     );
   }
+
+  const adjustedWidth = width < 768 ? width - 24 : 1200;
+  const adjustedHeight = 600; // Set height according to your design
 
   const contributionsRef = useRef<any>(null);
 
@@ -54,19 +60,19 @@ export default function Contributions() {
   };
 
   return (
-    <div className="container mx-auto flex flex-col items-center justify-center mb-[60px] ">
+    <div className="container mx-auto flex flex-col items-center justify-center mb-[60px]  overflow-hidden px-[12px]">
       <Header />
-      <div className="mb-4 flex items-center mt-[45px]">
+      <div className="mb-4  md:flex-row md:flex flex-col items-center space-y-[12px] md:space-y-0 mt-[45px]">
         <input
           type="text"
           value={username}
           onChange={handleInputChange}
           placeholder="Enter GitHub username"
-          className="p-2 text-lg border font-thin px-[18px] min-w-[600px] border-white/10 rounded-md bg-transparent outline-none"
+          className="p-2 text-lg border font-thin px-[18px] w-full  md:min-w-[600px] border-white/10 rounded-md bg-transparent outline-none"
         />
         <button
           onClick={handleSubmit}
-          className="ml-4 px-[10px] py-[10px] font-thin text-md bg-cyan-900 text-white rounded-md hover:bg-cyan-600 disabled:bg-gray-400"
+          className="md:ml-4 px-2 py-2 w-full md:w-auto md:flex font-thin text-md bg-cyan-900 text-white rounded-md hover:bg-cyan-600 disabled:bg-gray-400 whitespace-nowrap flex-shrink-0"
           disabled={loading}
         >
           {loading ? "Loading..." : "View Contributions"}
@@ -75,7 +81,7 @@ export default function Contributions() {
         {showContributions && !loading && (
           <button
             onClick={handleExport}
-            className="ml-4 px-[10px] py-[10px] font-thin text-md bg-cyan-900 text-white rounded-md hover:bg-cyan-600 disabled:bg-gray-400"
+            className="md:ml-4 px-2 py-2 w-full md:w-auto md:flex  font-thin text-md bg-cyan-900 text-white rounded-md hover:bg-cyan-600 disabled:bg-gray-400 whitespace-nowrap flex-shrink-0"
             disabled={loading}
           >
             {loading ? "Loading..." : "Export Model"}
@@ -91,12 +97,12 @@ export default function Contributions() {
             ref={contributionsRef}
             username={username}
             token={token}
-            height={600}
-            width={1200}
+            height={adjustedHeight}
+            width={adjustedWidth}
           />
         </div>
       ) : (
-        <div className="canvas-container  bg-[rgb(13,13,13)] border rounded-2xl border-white/10 h-[600px] w-[1200px] text-center items-center justify-center flex">
+        <div className="canvas-container  bg-[rgb(13,13,13)] border rounded-2xl border-white/10 h-[600px] w-full text-center items-center justify-center flex">
           <span className="text-[32px] opacity-40 font-thin">
             Your github society will display here...
           </span>
