@@ -91,30 +91,25 @@ const Contributions3D = forwardRef<any, ContributionsProps>(({
       spotLight.decay = 2;
       scene.add(spotLight);
 
-      // Create buildings
+      // Create buildings group with base
       const buildingsGroup = new THREE.Group();
+
+      // Create base
+      const baseHeight = 0.2;
+      const totalWidth = (weeks.length * (1 + 0.5)) - 0.5;
+      const totalDepth = (7 * (1 + 0.5)) - 0.5;
+      const baseGeometry = new THREE.BoxGeometry(totalWidth, baseHeight, totalDepth);
+      const baseMaterial = new THREE.MeshStandardMaterial({ color: 0x424242 });
+      const base = new THREE.Mesh(baseGeometry, baseMaterial);
+      base.position.set(0, baseHeight / 2, 0);
+      buildingsGroup.add(base);
+
+      // Create buildings
       const buildingWidth = 1;
       const buildingDepth = 1;
-      const baseHeight = 0.2;
       const maxHeight = 20;
       weeks.reverse().forEach((week, weekIndex) => {
         week.contributionDays.forEach((day, dayIndex) => {
-          // Base
-          const baseGeometry = new THREE.BoxGeometry(
-            buildingWidth,
-            baseHeight,
-            buildingDepth
-          );
-          const baseMaterial = new THREE.MeshStandardMaterial({
-            color: 0x424242,
-          });
-          const base = new THREE.Mesh(baseGeometry, baseMaterial);
-          base.position.set(
-            (weekIndex - weeks.length / 2) * (buildingWidth + 0.5),
-            baseHeight / 2,
-            (dayIndex - 3) * (buildingDepth + 0.5)
-          );
-
           // Building
           const height = Math.min(day.contributionCount, maxHeight);
           const geometry = new THREE.BoxGeometry(
@@ -133,7 +128,6 @@ const Contributions3D = forwardRef<any, ContributionsProps>(({
             (dayIndex - 3) * (buildingDepth + 0.5)
           );
 
-          buildingsGroup.add(base);
           buildingsGroup.add(building);
         });
       });

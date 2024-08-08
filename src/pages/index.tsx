@@ -54,7 +54,7 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto flex flex-col items-center justify-center ">
+    <div className="container mx-auto flex flex-col items-center justify-center mb-[60px] ">
       <Header />
       <div className="mb-4 flex items-center mt-[45px]">
         <input
