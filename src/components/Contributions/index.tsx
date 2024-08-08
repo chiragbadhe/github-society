@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import Contributions3D from "@/components/Contributions/Canvas";
 import Header from "@/components/Header";
-import useWindowSize from "@/hooks/usewindowsize";
+import useWindowSize from "@/hooks/usewindow";
 
 export default function Contributions() {
   const [username, setUsername] = useState("");
