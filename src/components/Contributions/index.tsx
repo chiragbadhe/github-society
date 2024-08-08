@@ -9,7 +9,7 @@ export default function Contributions() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { width, height } = useWindowSize(); // Get window size from the custom hook
+  const { width, height } = useWindowSize(); 
 
   const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
 
@@ -22,7 +22,8 @@ export default function Contributions() {
     );
   }
 
-  const adjustedWidth = width < 500 ? width - 24 : width < 1024 ? width * 0.9 : 1200;
+  const adjustedWidth =
+    width < 500 ? width - 24 : width < 1024 ? width * 0.9 : 1200;
   const adjustedHeight = 600; // Set height according to your design
 
   const contributionsRef = useRef<any>(null);
@@ -103,7 +104,7 @@ export default function Contributions() {
         </div>
       ) : (
         <div className="canvas-container  bg-[rgb(13,13,13)] border rounded-2xl border-white/10 h-[600px] w-full text-center items-center justify-center flex">
-          <span className="text-[32px] opacity-40 font-thin">
+          <span className="md:text-[32px] text-[22px] opacity-40 font-thin">
             Your github society will display here...
           </span>
         </div>
