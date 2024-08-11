@@ -3,6 +3,7 @@ import Contributions3D from "@/components/Contributions/Canvas";
 import Header from "@/components/Header";
 import useWindowSize from "@/hooks/usewindow";
 import { logEvent } from "../../lib/analytics";
+import { Footer } from "../Footer";
 
 export default function Contributions() {
   const [username, setUsername] = useState("");
@@ -110,6 +111,7 @@ export default function Contributions() {
           </span>
         </div>
       )}
+      <Footer />
     </div>
   );
 }
