@@ -1,8 +1,6 @@
 # GitHub Society
 
-Welcome to **GitHub Society**, the ultimate playground where your GitHub contributions transform into a dazzling 3D cityscape! 🎨🚀
-
-Imagine turning your coding achievements into a vibrant, rotating city of skyscrapers. With GitHub Society, you don't just track your contributions—_you see them soar_ in a spectacular 3D environment. And the fun doesn’t stop there—you can even export your 3D city as an STL file and take your virtual skyline into the real world!
+Welcome to **GitHub Society**, the ultimate playground where your GitHub contributions transform into a dazzling 3D cityscape! 🎨🚀 Imagine turning your coding achievements into a vibrant, rotating city of skyscrapers. With GitHub Society, you don't just track your contributions—_you see them soar_ in a spectacular 3D environment. And the fun doesn’t stop there—you can even export your 3D city as an STL file and take your virtual skyline into the real world!
 
 ## Features
 
