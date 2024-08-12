@@ -106,8 +106,8 @@ const Contributions3D = forwardRef<any, ContributionsProps>(
 
         // Create base
         const baseHeight = 1;
-        const totalWidth = weeks.length * (1 + 0.5) - 0.5;
-        const totalDepth = 7 * (1 + 0.5) - 0.5;
+        const totalWidth = 53 * (1 + 0.5) - 0.5; // Adjusted to fit 52 weeks + some margin
+        const totalDepth = 7 * (1 + 0.5) - 0.5; // 7 days per week
         const baseGeometry = new THREE.BoxGeometry(
           totalWidth,
           baseHeight,
@@ -120,13 +120,13 @@ const Contributions3D = forwardRef<any, ContributionsProps>(
         base.position.set(0, baseHeight / 2, 0);
         buildingsGroup.add(base);
 
-        // Create buildings
+        // Create buildings in calendar format
         const buildingWidth = 1;
         const buildingDepth = 1;
         const maxHeight = 20;
-        weeks.reverse().forEach((week, weekIndex) => {
+
+        weeks.forEach((week, weekIndex) => {
           week.contributionDays.forEach((day, dayIndex) => {
-            // Building
             const height = Math.min(day.contributionCount, maxHeight);
             const geometry = new THREE.BoxGeometry(
               buildingWidth,
@@ -139,9 +139,9 @@ const Contributions3D = forwardRef<any, ContributionsProps>(
             const material = new THREE.MeshStandardMaterial({ color });
             const building = new THREE.Mesh(geometry, material);
             building.position.set(
-              (weekIndex - weeks.length / 2) * (buildingWidth + 0.5),
+              (weekIndex - 26) * (buildingWidth + 0.5), // Adjust position for calendar alignment
               height / 2 + baseHeight,
-              (dayIndex - 3) * (buildingDepth + 0.5)
+              (dayIndex - 3) * (buildingDepth + 0.5) // Position buildings to fit a week grid
             );
 
             buildingsGroup.add(building);
